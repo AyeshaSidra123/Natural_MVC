@@ -35,6 +35,10 @@ namespace NatDMS.Mapping
             CreateMap<DistributorModel,EDR_DisplayViewModel>();
             CreateMap<RetailorModel, EDR_DisplayViewModel>();
             CreateMap<SearchModel,EDR_DisplayViewModel>();
+            CreateMap<DsrModel, EDR_DisplayViewModel>();
+            CreateMap<DsrModel, DsrViewModel>();
+            CreateMap<DsrModel,SaveDsrViewModel>();
+            CreateMap<DSRDetailsModel, SaveDsrViewModel>();
             CreateMap<DistributorToExecutive, AssignDistributorToExecutiveViewModel>();
             CreateMap<SearchModel , SearchViewModel>();
 
@@ -59,6 +63,10 @@ namespace NatDMS.Mapping
             CreateMap<EDR_DisplayViewModel, DistributorModel>();
             CreateMap<EDR_DisplayViewModel, RetailorModel>();
             CreateMap<EDR_DisplayViewModel, SearchModel>();
+            CreateMap<EDR_DisplayViewModel, DsrModel>();
+            CreateMap<DsrViewModel,DsrModel>();
+            CreateMap<SaveDsrViewModel, DsrModel>();
+            CreateMap<SaveDsrViewModel, DSRDetailsModel>();
             CreateMap<AssignDistributorToExecutiveViewModel, DistributorToExecutive>();
             CreateMap<SearchViewModel,SearchModel>();
 

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<NatDMS.Models.DsrViewModel>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GetDSR</title>
+
+    <link rel="stylesheet" type="text/css" href="~/css/dm-project-style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+   
+</head>
+
+<body>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="text-center">
+        </div>
+        <a href="@Url.Action("CreateDSR")" class="d-flex align-items-center">
+            <i class="material-icons">add</i>
+            <b><span style="font-weight:bold;">CREATE NEW DSR</span></b>
+        </a>
+    </div>
+
+    <!-- SEARCH DSR -->
+    <div class="container my-4">
+        @using (Html.BeginForm("SearchDSR", "DSR", FormMethod.Post))
+        {
+            <!-- Your search form for DSR -->
+        }
+
+        <!-- DISPLAY DSR LIST -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped custom-table">
+                <thead>
+                    <tr>
+                        <!-- Adjust column headers based on DSR properties -->
+                        <th>Executive</th>
+                        <th>Distributor</th>
+                        <th>Retailer</th>
+                        <th>OrderBy</th>
+                        <th>CreatedDate</th>
+                        <th>ModifiedDate</th>
+                        <th>TotalAmount</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dsr in Model)
+                    {
+                        <tr>
+                            <!-- Adjust display fields based on DSR properties -->
+                            <td>@Html.DisplayFor(modelItem => dsr.Executive)</td>
+                            <td>@Html.DisplayFor(modelItem => dsr.Distributor)</td>
+                            <td>@Html.DisplayFor(modelItem => dsr.Retailor)</td>
+                            <td>@Html.DisplayFor(modelItem => dsr.OrderBy)</td>
+                            <td>@Html.DisplayFor(modelItem => dsr.CreatedDate)</td>
+                            <td>@Html.DisplayFor(modelItem => dsr.ModifiedDate)</td>
+                            <td>@Html.DisplayFor(modelItem => dsr.TotalAmount)</td>
+                            <td>
+                                <a href="@Url.Action("EditDSR", new { id = dsr.Id })" style="text-decoration: none; display: inline-block; color:orange;">
+                                    <i class="material-icons">edit</i>
+                                </a>
+                            </td>
+                            <td>
+                                <!-- Your delete popup and form for DSR -->
+                            </td>
+                            <td>
+                                <a href="@Url.Action("DSRDetailsById", new { id = dsr.Id })" style="text-decoration: none; display: inline-block; color:green;">
+                                    <i class="material-icons">info</i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </body>
+</html>    

@@ -1,4 +1,5 @@
-﻿using Natural.Core.IServices;
+﻿using NatDMS.Models;
+using Natural.Core.IServices;
 using Natural.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,21 @@ namespace Naturals.Service.Service
             return await _httpClientWrapper.GetByIdAsync<List<AreaModel>>("/Area", cityId);
         }
 
+        public async Task<List<ExecutiveModel>> GetExecutives()
+        {
+            return await _httpClientWrapper.GetAsync<List<ExecutiveModel>>("/Executive/");
+        }
 
+        public async Task<List<DistributorToExecutive>> GetDistributorsByExecutiveId(string executiveId)
+        {
+            return await _httpClientWrapper.GetByIdAsync<List<DistributorToExecutive>>("/AssignDistributorToExecutive", executiveId);
+        }
+
+        public async Task<List<RetailorToDistributor>> GetRetailorbydistributorId(string distributorId)
+        {
+            return await _httpClientWrapper.GetByIdAsync<List<RetailorToDistributor>>("/AssignRetailorToDistributor", distributorId);
+        }
+       
     }
 
 }

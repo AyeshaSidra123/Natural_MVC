@@ -1,0 +1,192 @@
+﻿@model NatDMS.Models.SaveDsrViewModel
+
+@{
+    ViewData["Title"] = "CreateDsr";
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>CreateDsr</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/css/dm-project-style.css">
+
+    <script>
+        function movePlaceholder(input) {
+            input.setAttribute("placeholder", "");
+        }
+    </script>
+
+</head>
+
+<body>
+    @using (Html.BeginForm("CreateDsr", "DSR", FormMethod.Post, new { @class = "needs-validation", novalidate = "true" }))
+    {
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <b>
+                        @Html.LabelFor(model => model.Executive)
+                        @if (Model.Executives != null)
+                        {
+                            @Html.DropDownListFor(model => model.Executive, new SelectList(Model.Executives, "Id", "FirstName","LastName"),
+                    "--Select Excutive--", new { @id = "executive", onchange = "executivechange()", @class = "form-select" })
+                        }
+                        else
+                        {
+                            <p>Executives list is null.</p>
+                        }
+                        @Html.ValidationMessageFor(model => model.Executive, "", new { @class = "text-danger" })
+                    </b>
+                </div>
+
+
+                <div class="form-group">
+                    <b>
+                        @Html.LabelFor(model => model.DistributorId)
+                        @Html.DropDownListFor(model => model.DistributorId, new SelectList(new List<SelectListItem>
+                    {
+                    new SelectListItem { Text = "", Value = "" },
+                    }, "Value", "Text"), new { @id = "distributor", @onchange = "distributorchange()", @class = "form-select",
+                    })
+                        @Html.ValidationMessageFor(model => model.DistributorId, "", new { @class = "text-danger" })
+                    </b>
+                </div>
+
+                <div class="form-group">
+                    <b>
+                        @Html.LabelFor(model => model.RetailorId)
+                        @Html.DropDownListFor(model => model.RetailorId,new SelectList(new List<SelectListItem>
+                    {
+                    new SelectListItem { Text = "", Value = "" },
+                    }, "Value","Text"), new { @id = "retailor", @onchange = "retailorchange()",@class ="form -select",
+                    })
+                        @Html.ValidationMessageFor(model => model.RetailorId, "", new { @class = "text-danger" })
+                    </b>
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-outline-danger">SUBMIT</button>
+        </div>
+
+    }
+@*     <div class="table-responsive">
+        <table class="table table-bordered table-striped custom-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Weight</th>
+                    <th>price</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    
+                    </tr>
+                    </thead>
+                    </table>
+                    
+                    </div>
+    @foreach (var item in Model.Products)
+    {
+        
+    
+    <td>@Html.DisplayFor(modelItem => item.Product1)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Weight)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                         
+                   
+                            } *@
+    <div class="row">
+        <div class="col-md-10 d-flex justify-content-between">
+            <a href="@Url.Action("CreateDistributor")" class="d-flex align-items-center mr-6">
+                <i class="material-icons" style="font-size:20px;">refresh</i>
+                <span class="ml-2" style="font-weight: bold;">RESET</span>
+            </a>
+
+            <a href="@Url.Action("DisplayDistributors")" class="d-flex align-items-center">
+                <i class="material-icons" style="font-size:20px;">arrow_back</i>
+                <span class="ml-2" style="font-weight: bold;">BACK TO LIST</span>
+            </a>
+        </div>
+    </div>
+
+
+
+    <!--------------------------------------------AJAX CODE FOR STATE CITY,AREA-------------------------------------------------->
+
+    <script src="~/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        function executivechange() {
+            debugger;
+            var executiveid = $('#executive').val();
+            if (executiveid.trim() != '') {
+                var ddldistirbutor = $('#distributor');
+                ddldistirbutor.empty();
+                $.ajax(
+                    {
+                        url: "/DSR/GetDistributorbyExecutiveid",
+                        type: 'GET',
+                        dataType: 'json',
+                        data: { executiveId: executiveid },
+                        success: function (d) {
+                            ddldistirbutor.append($("<option></option>").val('').html('--Select distributor--'));
+                            $.each(d, function (i, distributors) {
+                                ddldistirbutor.append($("<option>" + distributors.distributorId + "</option>").val(distributors.id).html(distributors.distributorId));
+                            });
+                        },
+                        error: function () {
+                            alert('Error!');
+                        }
+                    });
+            }
+        }
+
+        <!----------SELECT AREA---------------->
+
+            function distributorchange() {
+                debugger;
+                var distirbutorid = $('#distirbutor').val();
+                if (distirbutorid.trim() != '') {
+                    var ddlretailor = $('#retailor');
+                    ddlretailor.empty();
+
+                    $.ajax(
+                        {
+                            url: "/DSR/GetRetailorsbyDitributorId",
+                            type: 'GET',
+                            dataType: 'json',
+                            data: { DistributorId: distirbutorid },
+                            success: function (d) {
+                                ddlretailor.append($("<option></option>").val('').html('--Select Retailor--'));
+                                $.each(d, function (i, retailors) {
+                                    ddlretailor.append($("<option>" + retailors.retailorId + "</option>").val(retailors.id).html(retailors.retailorId));
+                                });
+                            },
+                            error: function () {
+                                alert('Error!');
+                            }
+                        });
+                }
+            }
+    </script>
+</body>
+</html>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
